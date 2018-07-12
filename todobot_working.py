@@ -5,6 +5,7 @@ import urllib
 import datetime
 import fix_yahoo_finance as yf
 import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 # import config
 import telegram
