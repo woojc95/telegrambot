@@ -96,8 +96,11 @@ def handle_updates(updates):
         elif text == "/hiveup":
             bot.send_message(chat_id=chat, text=hiveup_latest())
         elif text == "/show":
-            keyboard = build_keyboard(items)
-            send_message("Select an item from your list", chat, keyboard)
+            if not items:
+                bot.send_message(chat_id=chat, text="LIST IS EMPTY")
+            else:
+                keyboard = build_keyboard(items)
+                send_message("Select an item from your list", chat, keyboard)
         elif text == "/clear":
             delete_all(items, chat)
             bot.send_message(chat_id=chat, text="LIST CLEARED")
