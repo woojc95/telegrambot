@@ -1,7 +1,7 @@
 import json
 import requests
 import time
-import urllib.parse
+import urllib
 import datetime
 import fix_yahoo_finance as yf
 import matplotlib
@@ -173,7 +173,7 @@ def build_keyboard(items):
 
 
 def send_message(text, chat_id, reply_markup=None):
-    text = urllib.parse.quote_plus(text)
+    text = urllib.quote_plus(text)
     url = URL + "sendMessage?text={}&chat_id={}&parse_mode=Markdown".format(text, chat_id)
     if reply_markup:
         url += "&reply_markup={}".format(reply_markup)
