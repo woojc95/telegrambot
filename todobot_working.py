@@ -18,6 +18,18 @@ TOKEN = "531343821:AAEdZ9Zwx7sJiCgRUtG30DSqwRdJuRcdmNw"
 URL = "https://api.telegram.org/bot{}/".format(TOKEN)
 bot = telegram.Bot(token=TOKEN)
 
+welcome_message = "Welcome to Hive Up BOT.\n" \
+                  + "Send me any ticker symbol with '/' (e.g. /AAPL)\n" \
+                  + "For Singapore stocks, add '.SI' at the back, (e.g. /Z74.SI for Singtel)\n" \
+                  + "Command List:\n" \
+                  + "'/' to show stock info\n" \
+                  + "'+' to add ticker to List\n" \
+                  + "'-' to delete ticker from List\n" \
+                  + "/show to show all the ticker in List\n" \
+                  + "/clear to delete all tickers in List\n" \
+                  + "/hiveup to show the lastest article from Hive Up!"
+
+
 def get_ticker_table(ticker):
     end = datetime.date.today()
     start = end.replace(end.year - 1)
@@ -85,8 +97,11 @@ def handle_updates(updates):
         elif text == "/hiveup":
             bot.send_message(chat_id=chat, text=hiveup_latest())
         elif text == "/show":
-            keyboard = build_keyboard(items)
-            send_message("Select an item from your list", chat, keyboard)
+            if not items:
+                bot.send_message(chat_id=chat, text="LIST IS EMPTY")
+            else:
+                keyboard = build_keyboard(items)
+                send_message("Select an item from your list", chat, keyboard)
         elif text == "/clear":
             delete_all(items, chat)
             bot.send_message(chat_id=chat, text="LIST CLEARED")
