@@ -20,11 +20,11 @@ bot = telegram.Bot(token=TOKEN)
 
 welcome_message = "Welcome to Hive Up BOT.\n" \
                   + "Send me any ticker symbol with '/' (e.g. /AAPL)\n" \
-                  + "For Singapore stocks, add '.SI' at the back, (e.g. /Z74.SI for Singtel)\n" \
+                  + "For Singapore stocks, add '.SI' at the back, (e.g. /Z74.SI for Singtel)\n\n" \
                   + "Command List:\n" \
                   + "'/' to show stock info\n" \
-                  + "'+' to add ticker to List\n" \
-                  + "'-' to delete ticker from List\n" \
+                  + "'+' to add ticker to List (e.g. +AAPL)\n" \
+                  + "'-' to delete ticker from List (e.g. -AAPL)\n" \
                   + "/show to show all the ticker in List\n" \
                   + "/clear to delete all tickers in List\n" \
                   + "/hiveup to show the lastest article from Hive Up!"
