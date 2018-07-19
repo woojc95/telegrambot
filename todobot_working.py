@@ -23,9 +23,9 @@ import webbrowser
 
 import httplib2
 import io
-from apiclient.http import MediaIoBaseDownload
+from googleapiclient.http import MediaIoBaseDownload
 
-from apiclient import discovery
+from googleapiclient import discovery
 from oauth2client import client
 
 from apiclient.http import MediaFileUpload
