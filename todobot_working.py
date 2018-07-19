@@ -28,7 +28,7 @@ from googleapiclient.http import MediaIoBaseDownload
 from googleapiclient import discovery
 from oauth2client import client
 
-from apiclient.http import MediaFileUpload
+from googleapiclient.http import MediaFileUpload
 
 # Setup the Drive v3 API
 SCOPES = 'https://www.googleapis.com/auth/drive.metadata.readonly'
