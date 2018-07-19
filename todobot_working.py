@@ -1,3 +1,8 @@
+from __future__ import print_function
+from apiclient.discovery import build
+from httplib2 import Http
+from oauth2client import file, client, tools
+
 import json
 import requests
 import time
@@ -11,6 +16,54 @@ import matplotlib.pyplot as plt
 import telegram
 import feedparser
 from dbhelper import DBHelper
+
+#google download#
+import json
+import webbrowser
+
+import httplib2
+import io
+from apiclient.http import MediaIoBaseDownload
+
+from apiclient import discovery
+from oauth2client import client
+
+from apiclient.http import MediaFileUpload
+
+# Setup the Drive v3 API
+SCOPES = 'https://www.googleapis.com/auth/drive.metadata.readonly'
+store = file.Storage('credentials.txt')
+creds = store.get()
+
+if not creds or creds.invalid:
+    flow = client.flow_from_clientsecrets('client_secrets.json', SCOPES)
+    creds = tools.run_flow(flow, store)
+drive_service = build('drive', 'v2', http=creds.authorize(Http()))
+
+#Call the Drive v3 API
+##results = drive_service.files().list(
+##    pageSize=1, fields="*").execute()
+##items = results.get('files', [])
+
+folder_id = "1XNasoVX2xbt8A-P_PGhxo8CSgNIYGrBD"
+
+def get_market_wrap():
+    file_list = []
+    children = drive_service.children().list(folderId=folder_id).execute()
+
+    for child in children.get('items', []):
+        file_list.append(child['id'])
+    print(file_list)
+    file_id = file_list[0]
+    request = drive_service.files().get_media(fileId=file_id)
+    fh = io.FileIO('market.png', 'wb')
+    downloader = MediaIoBaseDownload(fh, request)
+    done = False
+    while done is False:
+        status, done = downloader.next_chunk()
+        print ("Download %d%%." % int(status.progress() * 100))
+
+####
 
 db = DBHelper()
 
@@ -75,7 +128,7 @@ def get_last_update_id(updates):
         update_ids.append(int(update["update_id"]))
     return max(update_ids)
 
-def hiveup_latest():
+def hiveup_latest_article():
     d = feedparser.parse('http://hive-up.com/feed')
     return str(d['entries'][0]['link'])
 
@@ -94,8 +147,12 @@ def handle_updates(updates):
         items = db.get_items(chat)
         if text == "/start":
             send_message(welcome_message, chat)
+        elif text == "/market":
+            get_market_wrap()
+            m = open('market.png', 'rb')
+            bot.send_photo(chat_id=chat, photo=m)
         elif text == "/hiveup":
-            bot.send_message(chat_id=chat, text=hiveup_latest())
+            bot.send_message(chat_id=chat, text=hiveup_latest_article())
         elif text == "/show":
             if not items:
                 bot.send_message(chat_id=chat, text="LIST IS EMPTY")
