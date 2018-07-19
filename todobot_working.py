@@ -80,7 +80,8 @@ welcome_message = "Welcome to Hive Up BOT.\n" \
                   + "'-' to delete ticker from List (e.g. -AAPL)\n" \
                   + "/show to show all the ticker in List\n" \
                   + "/clear to delete all tickers in List\n" \
-                  + "/hiveup to show the lastest article from Hive Up!"
+                  + "/market to show the latest Market Wrap\n" \
+                  + "/hiveup to show the latest article from Hive Up!"
 
 
 def get_ticker_table(ticker):
