@@ -78,6 +78,7 @@ welcome_message = "Welcome to Hive Up BOT.\n" \
                   + "'/' to show stock info\n" \
                   + "'+' to add ticker to List (e.g. +AAPL)\n" \
                   + "'-' to delete ticker from List (e.g. -AAPL)\n" \
+                  + "'#' to search for a company by name (e.g. #apple)\n" \
                   + "/show to show all the ticker in List\n" \
                   + "/clear to delete all tickers in List\n" \
                   + "/market to show the latest Market Wrap\n" \
@@ -136,6 +137,22 @@ def hiveup_latest_article():
 def delete_all(items, chat):
     for i in items:
         db.delete_item(i, chat)
+        
+def get_suggest(ticker):
+    url = "http://autoc.finance.yahoo.com/autoc?query={}&region=EU&lang=en-GB".format(ticker)
+
+    result = requests.get(url).json()
+    company_dict = {}
+    for x in result['ResultSet']['Result']:
+        company_dict[x['name']] = x['symbol']
+    return company_dict
+
+def dict_to_string(company_dict):
+    string = ""
+    for x,y in company_dict.items():
+        string += "Company: {}, Ticker: /{}\n".format(x ,y)
+    return string
+        
 
 def handle_updates(updates):
     for update in updates["result"]:
@@ -163,6 +180,15 @@ def handle_updates(updates):
         elif text == "/clear":
             delete_all(items, chat)
             bot.send_message(chat_id=chat, text="LIST CLEARED")
+        elif text.startswith("#"):
+            name = text[1:]
+            company_dict = get_suggest(name)
+            string = dict_to_string(company_dict)
+            if not string:
+                bot.send_message(chat_id=chat, text="NO COMPANY FOUND!")
+            else:
+                add_string = "Company found:\n" + string
+                bot.send_message(chat_id=chat, text=add_string)
         elif text.startswith("-"):
             ticker = text[1:]
             ticker = ticker.upper()
