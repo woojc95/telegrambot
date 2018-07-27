@@ -78,7 +78,6 @@ welcome_message = "Welcome to Hive Up BOT.\n" \
                   + "'/' to show stock info\n" \
                   + "'+' to add ticker to List (e.g. +AAPL)\n" \
                   + "'-' to delete ticker from List (e.g. -AAPL)\n" \
-                  + "'#' to search for a company by name (e.g. #apple)\n" \
                   + "/show to show all the ticker in List\n" \
                   + "/clear to delete all tickers in List\n" \
                   + "/market to show the latest Market Wrap\n" \
@@ -180,15 +179,15 @@ def handle_updates(updates):
         elif text == "/clear":
             delete_all(items, chat)
             bot.send_message(chat_id=chat, text="LIST CLEARED")
-        elif text.startswith("#"):
-            name = text[1:]
-            company_dict = get_suggest(name)
-            string = dict_to_string(company_dict)
-            if not string:
-                bot.send_message(chat_id=chat, text="NO COMPANY FOUND!")
-            else:
-                add_string = "Company found:\n" + string
-                bot.send_message(chat_id=chat, text=add_string)
+##        elif text.startswith("#"):
+##            name = text[1:]
+##            company_dict = get_suggest(name)
+##            string = dict_to_string(company_dict)
+##            if not string:
+##                bot.send_message(chat_id=chat, text="NO COMPANY FOUND!")
+##            else:
+##                add_string = "Company found:\n" + string
+##                bot.send_message(chat_id=chat, text=add_string)
         elif text.startswith("-"):
             ticker = text[1:]
             ticker = ticker.upper()
@@ -210,6 +209,14 @@ def handle_updates(updates):
             company_name = get_company_name(ticker)
             if table is None or company_name is None:
                 bot.send_message(chat_id=chat, text="TICKER NOT FOUND!")
+                name = text[1:]
+                company_dict = get_suggest(name)
+                string = dict_to_string(company_dict)
+                if not string:
+                    bot.send_message(chat_id=chat, text="NO COMPANY FOUND!")
+                else:
+                    add_string = "Company found:\n" + string
+                    bot.send_message(chat_id=chat, text=add_string)
             elif check in items:
                 bot.send_message(chat_id=chat, text="TICKER ALREADY IN LIST")
             else:
@@ -226,6 +233,14 @@ def handle_updates(updates):
             company_name = get_company_name(ticker)
             if table is None or company_name is None:
                 bot.send_message(chat_id=chat, text="TICKER NOT FOUND!")
+                name = text[1:]
+                company_dict = get_suggest(name)
+                string = dict_to_string(company_dict)
+                if not string:
+                    bot.send_message(chat_id=chat, text="NO COMPANY FOUND!")
+                else:
+                    add_string = "Company found:\n" + string
+                    bot.send_message(chat_id=chat, text=add_string)
             else:
                 name = "Name: " + company_name
                 op = "Open: " + str(round(table['Open'].iloc[-1],2))
