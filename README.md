@@ -1,15 +1,15 @@
 # telegrambot
 hiveup
 
-The Python resource is for @hiveup_bot telegram bot.
+The Python resource is for @hiveup_bot telegram bot.\n
 
-The bot provides the latest Stock Price and Info from the ticker symbol provided by the user.
-Secondary purpose is to provide the latest Market Wrap and Finance Articles from hive-up.com
+The bot provides the latest Stock Price and Info from the ticker symbol provided by the user.\n
+Secondary purpose is to provide the latest Market Wrap and Finance Articles from hive-up.com\n
 
-Resources / Libraries / APIs involve:
-Yahoo Finance 
-Google Drive Autho
-RSS Feed
+Resources / Libraries / APIs involve:\n
+Yahoo Finance \n
+Google Drive Autho\n
+RSS Feed\n
 
 Command List:
 '/' to show stock info
